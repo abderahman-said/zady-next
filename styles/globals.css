@@ -35,6 +35,7 @@ h1 ,h2 ,h3 ,h4 ,h5, h6, p , ul , li , ol {
   font-family: 'Vazirmatn', sans-serif;
   margin: 0 !important;
   text-transform: capitalize;
+  text-align: right;
 }
 /* a:hover {
   color: none;
@@ -978,7 +979,7 @@ width: 100%;
 overflow: hidden;
 background: #fff;
 
-transition: all 500ms ease-in-out;
+transition: all 500ms ease-in-out !important; 
 border: 1px solid #d8dfea;
  }
  .div-back-top {
@@ -990,7 +991,7 @@ align-items: center;
 gap: 1rem;
 /* background-color: #eeebea; */
 }
-.card-store .div-back-top .add-cart {
+  .add-cart {
 transition: all 500ms ease-in-out;
 margin-top:  100px;
  }
@@ -998,15 +999,15 @@ margin-top:  100px;
 /* background-color: #d8dfea; */
 box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
 transform: translateY(-10px) !important;
-border: transparent;
+border-color: #dedfe2;
 }
- .card-store:hover  .div-back-top  .add-cart {
+  .add-cart {
   margin-top: 0;
  }
- .card-store:hover  .div-back-top  {
+ /* .card-store:hover  .div-back-top  {
   margin-top: -31px;
- }
- .card-store .add-cart {
+ } */
+ .add-cart {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1014,24 +1015,31 @@ border: transparent;
   padding: 10px;
   background-color: #0382b1;
   gap: 10px;
-  color: #fff;
+  color: #fff !important;
   width: 100%;
   max-width: 160px;
-  height: 40px;
+  height: 44px;
+  border: none;
+  outline: none;
+}
+.add-cart  p {
+  font-weight: 700 ;
+  color: #fff !important;
+  font-size: 18px;
 }
 .card-store p {
   font-weight: 700;
   font-size: 18px;
   text-align: right;
 }
-.card-store .add-cart i  {
+  .add-cart i  {
 font-size:15px ;
 }
-.card-store .add-cart svg  {
+  .add-cart svg  {
   width: 20px;
   height: 20px;
   }
-.card-store .add-cart p  {
+  .add-cart p  {
 font-size: 14px;
   
 }
@@ -1046,9 +1054,15 @@ font-size: 14px;
   overflow: hidden;
 }
  */
-
-
-
+ .p-image-preview-container:hover > .p-image-preview-indicator {
+  background-color: rgb(122 122 122 / 23%) !important;
+}
+ .modal-content {
+  border-radius: 2pc !important;
+}
+.modal-dialog {
+  max-width: 700px !important;
+}
 .Specs-flex {
   display: flex;
   align-items: center;
@@ -1680,11 +1694,33 @@ align-items: center;
 border-radius: 50%;
 }
 
+.flex-colum p {
+  color: #000;
+  font-size: 20px;
+  font-weight: 800;
+}
+.flex-colum {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
 
 
 .heart-card  i {
   color: #fff;
   font-size: 20px;
+}
+.flex-colum .p-button.p-button-icon-only {
+  width: 40px;
+  padding: 0.75rem 0;
+}
+
+.flex-colum .p-inputtext {
+  width: 40px !important;
+  background: #ffffff;
+  padding: 0 10px;
+  text-align: center;
 }
 
 
@@ -1692,12 +1728,44 @@ border-radius: 50%;
 
 
 
+.mySwiper2 {
+   width: 100%;
+}
 
+.mySwiper {
+   padding: 10px 0;
+}
 
+.mySwiper .swiper-slide {
+   height: 100%;
+  /* opacity: 0.4; */
+  /* filter: ; */
+}
 
+.mySwiper .swiper-slide-thumb-active {
+  opacity: 1;
+}
 
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* object-fit: cover; */
+  border-radius: 2pc;
+}
 
+/* .mySwiper2 img {
+  max-width: 200px;
+} */
+.img_left .swiper .swiper-wrapper {
+  padding: 0px   !important;
+}
 
+.img_left span.p-image.p-component.p-image-preview-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 
 
@@ -1942,7 +2010,12 @@ flex: auto !important;
  .part  p {
   color: #000 !important;
  }       
-      
+ .menu .col ul li {
+  padding: 0;
+  list-style: none;
+  font-size: 11px;
+  color: #000 !important;
+}
  .flex-product-star p {
   color: #000;
   font-size: 14px;
@@ -1954,6 +2027,7 @@ flex: auto !important;
   padding: 20px 0; 
 } 
 .menu { 
+  padding: 20px 0;
   display: flex; 
   /* gap: 1rem;  */
   flex-direction: column; 
@@ -1971,6 +2045,12 @@ flex: auto !important;
   color: #fff; 
   text-decoration: none; 
 } 
+
+.img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .menu a:hover { 
   color: #227087; 
   text-decoration: none; 
@@ -2063,4 +2143,8 @@ flex: auto !important;
 .menu .part img {
   width:30px ;
   height:30px ;
+}
+
+.modal-flex img {
+  border-radius: 1pc !important;
 }

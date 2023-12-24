@@ -15,13 +15,12 @@ const pro_name = (props) => {
 
       {getproductJsonData && (
         <div>
-          {getproductJsonData.products
+          {getproductJsonData?.products
             ?.filter(cat => cat.id !== 0)
             .slice(0, 4)
             .map((cat) => (
-
               <ul key={cat.id} >
-                  <li className='pt-4'>
+                  <li className=''>
                   <Link    href={`/product/id/${cat.id}`}  as={`/product/${cat.id}/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}`} className={styles.pro_name}>
                   {cat.name.substring(0, 30) + "...."}
                     </Link>

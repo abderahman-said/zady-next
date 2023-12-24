@@ -11,6 +11,8 @@ const Header = dynamic(() => import("./Header"), {
 const Meta = dynamic(() => import("./Meta"), {
   loading: () => <p>Loading ...</p>,
 });
+
+ 
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';

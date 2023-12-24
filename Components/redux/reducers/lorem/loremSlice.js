@@ -51,6 +51,48 @@ export const getBanners = createAsyncThunk(
     }
   }
 );
+ 
+ // Async thunk for getUserOrderDetails
+ 
+export const getUserOrderDetails = createAsyncThunk(
+  "getUserOrderDetails",
+  async (itemId, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${url}/rest/test.product/getUserOrderDetails/`,
+        {
+          id: itemId.id,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error searching products:', error);
+      return rejectWithValue(error.response);
+    }
+  }
+);
+ // Async thunk for addd
+ 
+ export const addd = createAsyncThunk(
+  'addd',
+  async ({ UserId, productId, count }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${url}/rest/test.product/addd/`,
+        {
+          UserId,
+          productId,
+          count,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      return rejectWithValue(error.response);
+    }
+  }
+);
+
 // Async thunk for search 
 export const searchProducts = createAsyncThunk(
   "searchProducts",
@@ -111,7 +153,7 @@ export const getSubCategories = createAsyncThunk(
       const response = await axios.post(
         `${url}/rest/test.product/getSubCategories/`,
         {
-          "id": props.id
+          "id": props
         }
       );
       return response.data;
@@ -193,6 +235,8 @@ const loremSlice = createSlice({
     getSubCategoriesData: [],
     getProductDetailsData: [],
     searchProductsData: [],
+    getUserOrderDetailsData: [],
+    adddData: [],
     loading: false,
     isSuccess: false,
     message: "",
@@ -238,6 +282,19 @@ const loremSlice = createSlice({
       state.isSuccess = false;
       state.message = "failed";
     },
+    [addd.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [addd.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.adddData = payload;
+      state.isSuccess = true;
+    },
+    [addd.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.isSuccess = false;
+      state.message = "failed";
+    },
     [searchProducts.pending]: (state, action) => {
       state.loading = true;
     },
@@ -261,6 +318,19 @@ const loremSlice = createSlice({
       state.isSuccess = true;
     },
     [getproductJson.rejected]: (state, { payload }) => {
+      state.loading = false;
+      state.isSuccess = false;
+      state.message = "failed";
+    },
+    [getUserOrderDetails.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getUserOrderDetails.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.getUserOrderDetailsData = payload;
+      state.isSuccess = true;
+    },
+    [getUserOrderDetails.rejected]: (state, { payload }) => {
       state.loading = false;
       state.isSuccess = false;
       state.message = "failed";

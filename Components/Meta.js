@@ -11,10 +11,10 @@ const Meta = ({ title, keywords, description }) => {
       <meta name='description' content={description} />
       <meta charSet='utf-8' />
     
-    {/* <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> */}
-    {/* <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/> */}
-    {/* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/next-sidebar@1/assets/css/next-sidebar.min.css" /> */}
-
+    <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css" />
+    <link rel="stylesheet" href="https://unpkg.com/primereact/resources/themes/lara-light-indigo/theme.css" />
+    <link rel="stylesheet" href="https://unpkg.com/primereact/resources/primereact.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/primeflex@3.2.1/primeflex.min.css" />
   
       <title>{title}</title>
     </Head>

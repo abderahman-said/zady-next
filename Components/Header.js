@@ -41,7 +41,7 @@ function Header(props) {
             <a>
               {Lorem1?.cats?.map((e, index) => (
                 <div key={e.id} onMouseEnter={() => handleMouseEnter(e.id)}>
-                  <li className={`li-hero-hover ${activeId === e.id || (index === 0 && !activeId) ? 'active-li' : ''}`}>
+                  <li className="li-hero-hover">
                     <p>{e.name}</p>
                     <i className="fa-solid fa-caret-left"></i>
                   </li>

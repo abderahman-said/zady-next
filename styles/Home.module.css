@@ -4460,7 +4460,7 @@ color:#fff !important;
   display: flex;
   justify-content: center;
   direction: rtl;
-  gap: 3rem;
+  /* gap: 3rem; */
   width: 100%;
 }
 .imageGallery_left {

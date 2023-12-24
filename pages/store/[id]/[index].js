@@ -1,8 +1,12 @@
-import Image from 'next/image';
+// import Image from 'next/image';
  import 'swiper/css';
 import Aos from "aos";
 import "aos/dist/aos.css";
 
+import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";                                //icons
+ 
 import blogs from "../../../public/img/Untitled-3.png";
 import mark1 from "../../../public/img/41c8e3e6-359d-4627-a835-d2b61ae36f45.png"
 import mark2 from "../../../public/img/50b2c98d-4694-4e36-a872-79812d24a365.png"
@@ -12,29 +16,45 @@ import mark5 from "../../../public/img/9e323147-f5d2-428b-a69c-260b15842950.png"
 import Accordion from 'react-bootstrap/Accordion';
 import styles from '../../../styles/Home.module.css';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-
+ import { Toast } from 'primereact/toast';
 import React, { useState , useEffect} from 'react';
 import SwiperCore, { Autoplay , Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getFullCategory } from "../../../Components/redux/reducers/lorem/loremSlice"
+import { addd, getFullCategory, getUserOrderDetails } from "../../../Components/redux/reducers/lorem/loremSlice"
  import { useDispatch, useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
+import { useRef } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import { Image } from 'primereact/image';
+ import { InputNumber } from 'primereact/inputnumber';
+
 function LeftTabsExample(props) {
   const [searchValue, setSearchValue] = useState('');
   const [search_Value, setSearch_Value] = useState("");
 
   const [specs, setSpecs] = useState([]); 
   const [selectedSpecs, setSelectedSpecs] = useState([]);    
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
   //  const router = useRouter();
   //   const productId = router.query.id;
   const router = useRouter();
   const  prod   = router.query.id;
   const productId = parseInt(prod, 10);
+  // const [show, setShow] = useState(false);
 
- 
+  const [show, setShow] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState({ id: null, name: null });
+
+  const handleShow = (productId, productName ,imageId , catIdID) => {
+    setSelectedProduct({ id: productId, name: productName , image:imageId , catId:catIdID });
+    setShow(true);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+  };
 
 
 
@@ -68,25 +88,15 @@ function LeftTabsExample(props) {
       window.history.pushState({}, '', url);
     }
   };
-  // axios
-  // .post('https://zayady.deltawy.com/rest/test.categories/getFullCategory', {
-  //   "catId": productId,
-  //   "minPrice": 29,
-  //   "maxPrice": 29,
-  //   "specs": requestSpecsEmbty,  
-  // })
-  // .then((response) => {
-  //   setStoreData(response.data);
-  //   const newCats = response.data.cats;
-  //   setCats(newCats);
-  // })
-  // .catch((error) => {
-  //   console.error(error);
-  // });
-
-  const getFullCategoryData = useSelector((state) => state.lorem.getFullCategoryData);
-
  
+  const [value2, setValue2] = useState(1);
+  const getFullCategoryData = useSelector((state) => state.lorem.getFullCategoryData);
+  const toast = useRef(null);
+
+    const showSuccess = () => {
+        toast.current.show({severity:'success', summary: 'Success', detail:'Message Content', life: 3000});
+    }
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -96,9 +106,17 @@ function LeftTabsExample(props) {
     Aos.init({ duration: 1000 });
     SwiperCore.use([Navigation]);
   }, [productId, dispatch, specs]);
-
  
-
+  const handleAddToCart = async (catId, productId) => {
+    try {
+      await dispatch(getUserOrderDetails({ id: "2" }));
+      await dispatch(addd({ UserId: "2" , productId, count: value2 }));
+      
+      showSuccess();
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
 
   function renderCategories() {
     return getFullCategoryData?.cats?.map((cat) => (
@@ -112,13 +130,16 @@ function LeftTabsExample(props) {
      const filteredProducts = cat.products?.filter((product) => product.catId === cat.id);
   
     return filteredProducts?.map((product) => (
-      <div className="card-store" key={product.id} data-aos="fade-up">
-        <Link  key={product.catId} href={`/product/id/${product.id}`}  as={`/product/${product.id}/${encodeURIComponent(product.name.replace(/\s+/g, '-'))}`}>
+      <div className="card-store" key={product.id} data-aos="fade-up" onClick={() => handleShow(product.id,  product.name , product.image  ,product.catId ) }>
+        {/* <Link  key={product.catId} href={`/product/id/${product.id}`}  as={`/product/${product.id}/${encodeURIComponent(product.name.replace(/\s+/g, '-'))}`}> */}
           <div className='img'>
-          <LazyLoadImage src={`/api/images?id=${product.image}`} alt={product.name} width={200} height={200}  />
+           <LazyLoadImage src={`/api/images?id=${product.image}`} alt={product.name} width={200} height={200}  />
           </div>
+          {/* </Link> */}
           <div className='div-back-top' >
-            <p>{product.name}</p>
+          {/* <Link  key={product.catId} href={`/product/id/${product.id}`}  as={`/product/${product.id}/${encodeURIComponent(product.name.replace(/\s+/g, '-'))}`}>  */}
+          <p>{product.name}</p>
+          {/* </Link> */}
             <div class="flex-product-star">
             <p>علامته التجاريه</p>
             <div class="iconaboutcp">
@@ -129,12 +150,12 @@ function LeftTabsExample(props) {
           <i class="fa-regular fa-star iconpartt"></i>
           </div>
           </div>
-            <div className='add-cart'>
-              <i className="fa-solid fa-cart-shopping"></i>
-              <p>اضافه الى السله </p>
-            </div>
+          {/* <button className='add-cart'  onClick={() => handleAddToCart(product.catId, product.id)}>
+      <i className="fa-solid fa-cart-shopping"></i>
+      <p>اضف  الى السله </p>
+    </button> */}
           </div>
-        </Link>
+        {/* </Link> */}
       </div>
     ));
   }
@@ -143,6 +164,7 @@ function LeftTabsExample(props) {
  
 
   
+  const icon = (<i className="pi pi-search"></i>)
 
 
    if (!getFullCategoryData) {
@@ -169,7 +191,48 @@ function LeftTabsExample(props) {
    < >
 
    {/* ==========================home=========================== */}
-
+   <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          
+        </Modal.Header>
+        <Modal.Body>
+          <div className='d-flex align-items-center gap-4 modal-flex' >
+          
+          <div className='flex-colum'>
+          <p>{selectedProduct.name} </p>
+          <div className='d-flex align-items-center gap-3  ' >
+          <button className='add-cart'  onClick={() => handleAddToCart(selectedProduct.catId, selectedProduct.id)}>
+      <i className="fa-solid fa-cart-shopping"></i>   
+      اضف  الى السله  
+    </button>
+          <InputNumber
+        inputId="horizontal-buttons"
+        value={value2}
+        onValueChange={(e) => setValue2(e.value)}
+        showButtons
+        buttonLayout="horizontal"
+        step={1}
+        decrementButtonClassName="p-button-danger"
+        incrementButtonClassName="p-button-success"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+      />
+         
+          </div>
+          </div>
+          <Image src={`/api/images?id=${selectedProduct.image}`} zoomSrc={`/api/images?id=${selectedProduct.image}`} alt="Image" width="auto" height="auto" preview />
+          </div>
+            {/* <Link className='add-cart' key={selectedProduct.id} href={`/product/id/${selectedProduct.id}`} as={`/product/${selectedProduct.id}/${encodeURIComponent(selectedProduct.name.replace(/\s+/g, '-'))}`} >
+              صفحه المنتج
+            </Link> */}
+            {selectedProduct && selectedProduct.name && (
+  <Link className='add-cart' key={selectedProduct.id} href={`/product/id/${selectedProduct.id}`} as={`/product/${selectedProduct.id}/${encodeURIComponent(selectedProduct.name.replace(/\s+/g, '-'))}`}>
+    صفحة المنتج
+  </Link>
+)}
+        </Modal.Body>
+         
+      </Modal>
 <section className={styles.hometwo}>
  
   <div style={{padding:"10px 30px" }} className={styles.padding_blog_phone}>
@@ -395,11 +458,11 @@ function LeftTabsExample(props) {
 <section className={`${styles.bannertwo} ${styles.padding_blog_phone}`}  >
   <h2 style={{fontWeight: "bold"}}>تسوق حسب الماركه</h2>
   <div>
-    <a><Image loading="lazy"src={mark1} alt=""></Image></a>
+    {/* <a><Image loading="lazy"src={mark1} alt=""></Image></a>
     <a><Image loading="lazy"src={mark2}  alt="" ></Image></a>
     <a><Image loading="lazy"src={mark3}alt=""></Image></a>
     <a><Image loading="lazy"src={mark4}alt=""></Image></a>
-    <a><Image loading="lazy"src={mark5}alt=""></Image></a>
+    <a><Image loading="lazy"src={mark5}alt=""></Image></a> */}
   </div>
 </section>
 {/* ============= */}

@@ -6,7 +6,7 @@ import axios from 'axios';
   import shahn3 from "../../../public/img/35a18503-a6a0-4825-9e47-80e2e29690f4.png";     
 import Imagegal1 from "../../../public/img/security.png";     
 import Imagegal2 from "../../../public/img/security2.png";     
-import Image from 'next/image';
+// import Image from 'next/image';
 import SwiperCore, { Autoplay , Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Modal from 'react-bootstrap/Modal';
@@ -15,25 +15,36 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import { TabView, TabPanel } from 'primereact/tabview';
 import "primereact/resources/primereact.min.css";                                               
 import Link from 'next/link';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+import { Image } from 'primereact/image';
+import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";         
 import 'swiper/css';
 import { useRouter } from 'next/router';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import styles from '../../../styles/Home.module.css';
-import { Container } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import ImageViewer from 'react-simple-image-viewer';
 import Aos from "aos";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails } from "../../../Components/redux/reducers/lorem/loremSlice";
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import { FreeMode , Thumbs } from 'swiper';
+
+ 
 const about = (props) => {
+ 
+ 
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
     const router = useRouter();
-    const  prod   = router.query.id;
-    const productId = parseInt(prod, 10);
+    const  productId   = router.query.id;
+    // const productId = parseInt(prod, 10);
 
 
  const handleImageClick = (id) => {
@@ -92,8 +103,8 @@ console.log("productData" ,productData)
   }
   return (
     <Container style={{maxWidth: "1800px" }}>   
-    <div className={`${styles.imageGallery} ${styles.imageGallery_padding}`} >
-    <div className={styles.imageGallery_left}>
+    <Row className={`${styles.imageGallery} ${styles.imageGallery_padding}`} >
+    <Col md={7} className={styles.imageGallery_left} >
             <div >
             <div className={styles.imageGallery_left_button12} >
             
@@ -185,55 +196,60 @@ console.log("productData" ,productData)
 
           </div>
           
-            </div>
+            </Col>
     
-            <div className="img_left">   
-{productData && (
-  <div>    
-    <div  onClick={openImageViewer} style={{display: 'flex',justifyContent: 'center' }} >
-    {selectedImageId ? (
-  <div onClick={openImageViewer} >
-    <Image loading="lazy"alt="" 
-      src={`/api/images?id=${selectedImageId}`}
-      width={350}
-      height={350}
-      style={{
-        boxShadow: '0 0 50px #f3f2f2',
-        borderRadius:"1.4pc",
-        marginBottom:"20px",
-             }}
-      className="replace_large"
-    />
-  </div>
-) : (
-  <div onClick={openImageViewer}>
-    <Image loading="lazy"alt="" 
-      src={`/api/images?id=${productData?.imgs?.imgs[0].large}`}
-      width={350}
-      height={350}
-      style={{
-        boxShadow: '0 0 50px #f3f2f2',
-        borderRadius:"1.4pc",
-        marginBottom:"20px"
+            <Col md={4} className="img_left  ">   
+            {productData && (
 
-             }}
-      className="replace_large"
-    />
-  </div>
-)}
-    </div>
-    
-    <div style={{display:'flex' ,justifyContent:"center"}}  >
-      {productData?.imgs?.imgs?.map((image, index) => (
+<>
+    <Swiper
+        style={{
+          '--swiper-navigation-color': '#fff',
+          '--swiper-pagination-color': '#fff',
+        }}
+        loop={true}
+        spaceBetween={10}
+        navigation={true}
+        thumbs={{ swiper: thumbsSwiper }}
+        modules={[FreeMode, Navigation, Thumbs]}
+        className="mySwiper2"
+      >
+         {productData?.imgs?.imgs?.map((image, index) => (
         <div
           key={index}
-          onClick={() => handleImageClick(image.small)}
-          style={{
+          
+        >
+          <SwiperSlide>
+          <Image loading="lazy" 
+             src={`/api/images?id=${image.medium}`}  zoomSrc={`/api/images?id=${image.large}`} alt="Image" width="auto" height="auto" preview   
+          />
+        </SwiperSlide>
+        </div>
+      ))}
+         
+        
+      </Swiper>
+      <Swiper
+        onSwiper={setThumbsSwiper}
+        loop={true}
+        spaceBetween={10}
+        slidesPerView={4}
+        freeMode={true}
+        watchSlidesProgress={true}
+        modules={[FreeMode, Navigation, Thumbs]}
+        className="mySwiper"
+      >
+        
+        {productData?.imgs?.imgs?.map((image, index) => (
+        <div
+          key={index}
+           style={{
             border: selectedImageId === image.medium ? '1px solid #ccc' : '',
             padding: '5px',
             cursor: 'pointer',
           }}
         >
+          <SwiperSlide>
           <Image loading="lazy"alt="" 
           style={{
      boxShadow: '0 0 50px #f3f2f2',
@@ -243,30 +259,26 @@ console.log("productData" ,productData)
             width={90}
             height={80}
           />
+        </SwiperSlide>
         </div>
       ))}
-    </div>
-{isViewerOpen && (
-        <Image loading="lazy"alt="" Viewer
-        src={[`/api/images?id=${selectedImageId}`]}
-        currentIndex={currentImage}
-        onClose={() => setIsViewerOpen(false)}
-          disableScroll={false}
-          backgroundStyle={{
-            backgroundColor: "#000",
-            zIndex:'99999999',
-          }}
-          closeOnClickOutside={true}
-        />
-      )}
-  </div>
+         
+      </Swiper>
+
+      </>
+
+
 )}
-    </div>   
+    </Col>   
 
      
     
   
-    </div>
+    </Row>
+
+
+
+  
 {/* ===================== */}
 <div style={{direction:'rtl' }} className={styles.imageGallery_padding}>
   <div >
@@ -613,3 +625,4 @@ export default about
 // );
 // }
 // export default about;
+ 
