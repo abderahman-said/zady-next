@@ -153,7 +153,7 @@ export const getSubCategories = createAsyncThunk(
       const response = await axios.post(
         `${url}/rest/test.product/getSubCategories/`,
         {
-          "id": props
+          "id": props.id
         }
       );
       return response.data;
