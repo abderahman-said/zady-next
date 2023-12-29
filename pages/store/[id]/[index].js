@@ -22,7 +22,7 @@ import SwiperCore, { Autoplay , Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { addd, getFullCategory, getUserOrderDetails } from "../../../Components/redux/reducers/lorem/loremSlice"
+import { addToCart, getFullCategory, getUserOrderDetails } from "../../../Components/redux/reducers/lorem/loremSlice"
  import { useDispatch, useSelector } from 'react-redux';
 import { Container } from 'react-bootstrap';
 import { useRef } from 'react';
@@ -107,17 +107,42 @@ function LeftTabsExample(props) {
     SwiperCore.use([Navigation]);
   }, [productId, dispatch, specs]);
  
-  const handleAddToCart = async (catId, productId) => {
-    try {
-      await dispatch(getUserOrderDetails({ id: "2" }));
-      await dispatch(addd({ UserId: "2" , productId, count: value2 }));
+  // const handleAddToCart = async (catId, productId) => {
+  //   const UserId = typeof window !== 'undefined' && window.localStorage.getItem("ib_ID") || 0;
+    
+  //   try {
+  //     await dispatch(getUserOrderDetails({ id:  UserId  }));
+  //     await dispatch(addToCart({ UserId:  UserId  , productId, count: value2 }));
       
-      showSuccess();
+  //     showSuccess();
+  //   } catch (error) {
+  //     console.error('Error adding to cart:', error);
+  //   }
+  // };
+
+
+  async function handleAddToCart(catId, productId) {
+    const userId = typeof window !== 'undefined' && window.localStorage.getItem("ib_ID") || 0;
+  
+    try {
+      if (!userId) {
+        router.push("/auth");  
+      } else {
+        await dispatch(getUserOrderDetails({ id: userId }));
+        await dispatch(addToCart({ UserId: userId, productId, count: value2 }));
+        dispatch(AddToCart(data)).then(() => {
+          getCart();
+          ShowSuccess();
+        });
+      }
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
+  }
+  const getCart = () => {
+    const ID = window.localStorage.getItem("ib_ID");
+    dispatch(getCarts(ID));
   };
-
   function renderCategories() {
     return getFullCategoryData?.cats?.map((cat) => (
       <div key={cat.id} className={styles.article_blogs}>
@@ -352,30 +377,39 @@ function LeftTabsExample(props) {
 
 
 
-
-  <Accordion defaultActiveKey={['0']} alwaysOpen>
+   <Accordion defaultActiveKey={['0']} alwaysOpen>
       <Accordion.Item eventKey="0">
         <Accordion.Header > <h3>التصنيفات</h3></Accordion.Header>
         <Accordion.Body>
-        {getFullCategoryData?.subCats?.map((e) => (
-        <div style={{ display: 'flex', flexDirection: 'column' }} key={e.id}>
-          <input
+            <input
             placeholder="بحث"
             type="text"
             className='search-subCats'
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
+        {getFullCategoryData?.subCats?.map((e) => (
+        <div  key={e.id}>
+        
           {e.name.includes(searchValue) && (
             <Link
-              href={`/store/id/${e.id}`}
-              as={`/store/${e.id}/${encodeURIComponent(e.name.replace(/\s+/g, '-'))}`}
+            href={`/store/id/${e.id}`}
+            as={`/store/${e.id}/${encodeURIComponent(e.name.replace(/\s+/g, '-'))}`} key={e.id} className='Specs-flex'>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column"
+              }}
             >
-              <div className={styles.tas}>
+              
+              <div className={styles.tas}  >
                 <p>{e.name}</p>
-                <div>({e.count})</div>
+                <p>({e.count})</p>
               </div>
-            </Link>
+            </div>
+          </Link>
+           
+               
           )}
         </div>
       ))}
