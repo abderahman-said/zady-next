@@ -16,32 +16,62 @@ const names_cat = (props) => {
      dispatch(getSubCategories({ id: props.id }));
   }, [dispatch, props.id]);
 
+ console.log("getSubCategoriesData" ,getSubCategoriesData)
+
+  if (!getSubCategoriesData) {
+    return (
+    <div  style={{display:"flex" , justifyContent:"center" , alignItems:"center" , height:"55.7vh"}}>
+      <div  className={styles.ui_abstergo}>
+  <div  className={styles.abstergo_loader}>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div  className={styles.ui_text}>
+    Loading  
+    <div className={styles.ui_dot}></div>
+    <div className={styles.ui_dot}></div>
+    <div className={styles.ui_dot}></div>
+  </div>
+</div>
+    </div>
+    );
+  }
   return (
     <div>
       
-        {getSubCategoriesData && (
-          <div className={styles.head_sub}>
-            {getSubCategoriesData.cats
-              ?.filter(cat => cat.id !== 0)
-              .slice(0, 3)
-              .map((cat) => (
-                <div className='flex-product header-card' key={cat.id}>
-                <Link    href={`/store/id/${cat.id}`}  as={`/store/${cat.id}/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}`} >
-                   <div>
-                    <LazyLoadImage loading="lazy"alt={cat.name}  src={`/api/images?id=${cat.image}`}   width={170} height={170} />
-                  </div>
-                  <div className={styles.name_head_sub}>
-                    <h5 style={{paddingTop:'1rem'}}>{cat.name}</h5> 
-                  </div>
-                  </Link>
+      {getSubCategoriesData && (
+  <div className={styles.head_sub}>
+    {getSubCategoriesData.cats
+      ?.filter((cata) => cata.id === props.id)
+      ?.map((cata) => (
+        <div className='flex-product header-card' key={cata.id}>
+          <h1> {cata.id} </h1>
+          <Link
+            href={`/store/id/${cata.id}`}
+            as={`/store/${cata.id}/${encodeURIComponent(
+              cata.name.replace(/\s+/g, '-')
+            )}`}
+          >
+            <div>
+              <LazyLoadImage
+                loading="lazy"
+                alt={cata.name}
+                src={`/api/images?id=${cata.image}`}
+                width={170}
+                height={170}
+              />
+            </div>
+            <div className={styles.name_head_sub}>
+              <h5 style={{ paddingTop: '1rem' }}>{cata.name}</h5>
+            </div>
+          </Link>
+          <Pro_name id={cata.id} />
+        </div>
+      ))}
+  </div>
+)}
 
-                  <Pro_name id={cat.id} /> 
-
-                </div>
-
-              ))}
-          </div>
-        )}
     </div>
   )
 }

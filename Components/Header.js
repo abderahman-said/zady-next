@@ -19,8 +19,7 @@ function Header(props) {
     dispatch(getLorems());
   }, []);
  
-  const [activeId, setActiveId] = useState(null);
-  const [hoveredId, setHoveredId] = useState(null);
+   const [hoveredId, setHoveredId] = useState(null);
   const handleMouseEnter = (id) => {
     setHoveredId(id);
   };
@@ -40,8 +39,8 @@ function Header(props) {
           <li className={styles.ruby_active_menu_item}>
             <a>
               {Lorem1?.cats?.map((e, index) => (
-                <div key={e.id} onMouseEnter={() => handleMouseEnter(e.id)}>
-                  <li className="li-hero-hover">
+                <div key={e.id} >
+                  <li className="li-hero-hover" onMouseEnter={() => handleMouseEnter(e.id)}> 
                     <p>{e.name}</p>
                     <i className="fa-solid fa-caret-left"></i>
                   </li>

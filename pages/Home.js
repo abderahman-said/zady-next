@@ -82,7 +82,6 @@ const [hoveredId, setHoveredId] = useState(null);
 const handleMouseEnter = (id) => {
   setHoveredId(id);
 };
-console.log("hoveredId" , hoveredId)
   return (
     <Container style={{maxWidth: "1800px" }}>
 

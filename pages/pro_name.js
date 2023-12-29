@@ -10,6 +10,27 @@ const pro_name = (props) => {
      dispatch(getproductJson({ id: props.id }));
   }, [dispatch, props.id]);
 
+
+  
+  if (!getproductJsonData) {
+    return (
+    <div  style={{display:"flex" , justifyContent:"center" , alignItems:"center" , height:"55.7vh"}}>
+      <div  className={styles.ui_abstergo}>
+  <div  className={styles.abstergo_loader}>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div  className={styles.ui_text}>
+    Loading  
+    <div className={styles.ui_dot}></div>
+    <div className={styles.ui_dot}></div>
+    <div className={styles.ui_dot}></div>
+  </div>
+</div>
+    </div>
+    );
+  }
   return (
     <>
 
@@ -17,9 +38,10 @@ const pro_name = (props) => {
         <div>
           {getproductJsonData?.products
             ?.filter(cat => cat.id !== 0)
-            .slice(0, 4)
+            .slice(0, 3)
             .map((cat) => (
               <ul key={cat.id} >
+                {cat.id}
                   <li className=''>
                   <Link    href={`/product/id/${cat.id}`}  as={`/product/${cat.id}/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}`} className={styles.pro_name}>
                   {cat.name.substring(0, 30) + "...."}
