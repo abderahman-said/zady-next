@@ -92,23 +92,23 @@ export const getUserOrderDetails = createAsyncThunk(
   }
 );
  // Async thunk for finishCart
- export const finishCart = createAsyncThunk(
-  'finishCart',
-  async ({ id }, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(
-        `${url}/rest/test.orderbill/finishCart`,
-        {
-          id: id,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error finishing cart:', error);
-      return rejectWithValue(error.response);
-    }
-  }
-);
+//  export const finishCart = createAsyncThunk(
+//   'finishCart',
+//   async ({ id }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post(
+//         `${url}/rest/test.orderbill/finishCart`,
+//         {
+//           id: id,
+//         }
+//       );
+//       return response.data;
+//     } catch (error) {
+//       console.error('Error finishing cart:', error);
+//       return rejectWithValue(error.response);
+//     }
+//   }
+// );
 
 // Async thunk for search 
 export const searchProducts = createAsyncThunk(
@@ -254,7 +254,7 @@ const loremSlice = createSlice({
     searchProductsData: [],
     getUserOrderDetailsData: [],
     addToCartData: [],
-    finishCartData: [],
+    // finishCartData: [],
     loading: false,
     isSuccess: false,
     message: "",
@@ -287,19 +287,19 @@ const loremSlice = createSlice({
       state.isSuccess = false;
       state.message = "failed";
     },
-    [finishCart.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [finishCart.fulfilled]: (state, { payload }) => {
-      state.loading = false;
-      state.finishCartData = payload;
-      state.isSuccess = true;
-    },
-    [finishCart.rejected]: (state, { payload }) => {
-      state.loading = false;
-      state.isSuccess = false;
-      state.message = "failed";
-    },
+    // [finishCart.pending]: (state, action) => {
+    //   state.loading = true;
+    // },
+    // [finishCart.fulfilled]: (state, { payload }) => {
+    //   state.loading = false;
+    //   state.finishCartData = payload;
+    //   state.isSuccess = true;
+    // },
+    // [finishCart.rejected]: (state, { payload }) => {
+    //   state.loading = false;
+    //   state.isSuccess = false;
+    //   state.message = "failed";
+    // },
     [getProductDetails.pending]: (state, action) => {
       state.loading = true;
     },

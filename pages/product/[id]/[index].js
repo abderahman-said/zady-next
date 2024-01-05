@@ -29,7 +29,7 @@ import ImageViewer from 'react-simple-image-viewer';
 import Aos from "aos";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductDetails } from "../../../Components/redux/reducers/lorem/loremSlice";
+import { addToCart, getProductDetails, getUserOrderDetails } from "../../../Components/redux/reducers/lorem/loremSlice";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
@@ -75,12 +75,35 @@ console.log("productData" ,productData)
    }, [productId, dispatch]);
  
   
+   const [value2, setValue2] = useState(1);
  
   const [activeIndex, setActiveIndex] = useState(0);     
   const [show, setShow] = useState(false);
-  const [value3, setValue3] = useState(1);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  async function handleAddToCart(catId, productId) {
+    const userId = typeof window !== 'undefined' && window.localStorage.getItem("ib_ID") || 0;
+  
+    try {
+      if (!userId) {
+        router.push("/Auth/auth");  
+      } else {
+        await dispatch(getUserOrderDetails({ id: userId }));
+        await dispatch(addToCart({ UserId: userId, productId, count: value2 }));
+        dispatch(getUserOrderDetails(data)).then(() => {
+          getCart();
+          // showSuccess();
+        });
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  }
+  const getCart = () => {
+    const ID = window.localStorage.getItem("ib_ID");
+    dispatch(getCarts(ID));
+  };
+  
 
   if (!productData) {
     return (
@@ -105,7 +128,6 @@ console.log("productData" ,productData)
     <Container style={{maxWidth: "1800px" }}>   
     <Row className={`${styles.imageGallery} ${styles.imageGallery_padding}`} >
     <Col md={7} className={styles.imageGallery_left} >
-            <div >
             <div className={styles.imageGallery_left_button12} >
             
              <div className={styles.sala_contantp}>
@@ -114,69 +136,43 @@ console.log("productData" ,productData)
             </div>
             {productData && (
             <>
-              <h2>{productData.name}</h2>
-               <Link href="/" style={{color:'black ' , paddingTop:"1rem" }}>
+              <h3>{productData.name}</h3>
                 <h5 >
                   {productData.catName}
                </h5>
-               </Link> 
                <h5 >
                   {productData.shortDescription}
                </h5>
             </>
           )}
-            <div style={{display: 'flex',
-            justifyContent: 'space-between',
-              alignItems: 'center'}}>
-            <h6 style={{color:'#0382b1' ,fontWeight:"bold"}}>15,555</h6>
               </div>        
               </div>
-              </div>
-
-              </div>
-            <div className={styles.imageGallery_left_button12} style={{display:'flex' , justifyContent:'center' ,gap:"1rem", alignItems:'center' , flexDirection:'row'}}>
-            <Modal show={show} onHide={handleClose}>
-        
-        <Modal.Body > 
-          <div className={styles.modal_body}>
-          <Image loading="lazy"alt=""  src={shahn3} style={{width:"100px", height:"100%" ,boxShadow:" 1px 3px 5px rgb(209, 209, 209)" ,padding: "5px"
-    ,borderRadius: '20px'}}></Image>
-    <div>
-        <h5>  تلفزيون 50 بوصه فائق الجوده4kشاشه 
-          فائق الجوده والسرعه
-        </h5>
-        <p style={{color:'#0382b1'}}>15,555</p>
-        
-        </div>
-        
-    </div></Modal.Body>
-        <Modal.Footer>
-        <button  className={`${styles.salebtn} ${styles.متابعه_الدفع}`}> 
-        <Link href='/logintwo'>   
-         متابعه الدفع
-        </Link> 
-      </button>
-       </Modal.Footer>
-      </Modal>
-            <div className="flex-auto" style={{display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',}}>
+            <div className={styles.imageGallery_left_button12} >
+            <div className="" >
                 <label htmlFor="minmax-buttons" className="font-bold block mb-2"> 
                   <h5 style={{margin:'0'}}>الكميه</h5>
                 </label>
-                <InputNumber inputId="minmax-buttons" value={value3} onValueChange={(e) => setValue3(e.value)} mode="decimal" showButtons min={1} max={10000} />
+                <InputNumber
+        inputId="horizontal-buttons"
+        value={value2}
+        onValueChange={(e) => setValue2(e.value)}
+        showButtons
+        buttonLayout="horizontal"
+        step={1}
+        min={1}
+        decrementButtonClassName="p-button-danger"
+        incrementButtonClassName="p-button-success"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+      />
             </div>
-              <button className={styles.imageGallery_left_button1}  onClick={handleShow}>
-                اضافه الى السله
-          
-
-     
-     
-
-              </button>     
-              <button className={styles.imageGallery_left_button2}> 
+            <button className='add-cart'  onClick={() => handleAddToCart(productData.catId, productData.id)}>
+      <i className="fa-solid fa-cart-shopping"></i>   
+      اضف  الى السله  
+    </button>    
+              {/* <button className={styles.imageGallery_left_button2}> 
               اضافه الى المقارنه       
-                     </button>
+                     </button> */}
             </div>
           <div className={styles.imageGallery_left_button12} style={{display:'flex' , gap:'3rem', padding:"30px 0", justifyContent:'center' ,  }}>     
             <div style={{display:'flex' , justifyContent:'center', gap:'1rem' }}>     

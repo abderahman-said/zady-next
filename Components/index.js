@@ -1,24 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import aboutUs from "../pages/aboutUs";
-import store from "./redux/store/store";
+import store from "./redux/store/Store";
 import { Provider } from "react-redux";
+import AboutUs from "../pages/aboutUs";
 
-const root = ReactDOM.createRoot(
-    document.getElementById('root')
+const rootElement = document.getElementById("root");
+
+function App() {
+  return (
+    <Provider store={store}>
+      <AboutUs />
+    </Provider>
   );
-  
-  function tick() {
-    const element = (
-      <div>
-      <Provider store={store}>
-        <aboutUs />
-      </Provider>
-      </div>
-    );
-    root.render(element);
-  }
-  
-  setInterval(tick, 1000);
+}
 
-  
+ReactDOM.render(<App />, rootElement);

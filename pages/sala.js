@@ -6,16 +6,17 @@ import Link from 'next/link';
 import Image from "next/image";
 import salla from "../public/img/shopping-cart.png"
 import { useEffect } from 'react';
-import { addToCart, finishCart, getUserOrderDetails } from '../Components/redux/reducers/lorem/loremSlice';
+import { addToCart , getUserOrderDetails } from '../Components/redux/reducers/lorem/loremSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Aos from 'aos';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Col, Container, Row } from 'react-bootstrap';
+import { finishCart } from '../Components/redux/reducers/ShopSlice';
 
 function sala() {
  
   const getUserOrderDetailsData = useSelector((state) => state.lorem.getUserOrderDetailsData);
-  const finishCart = useSelector((state) => state.lorem.finishCartData);
+  // const finishCart = useSelector((state) => state.lorem.finishCartData);
   const id = typeof window !== 'undefined' && window.localStorage.getItem("ib_ID");
 
   const dispatch = useDispatch();
@@ -36,50 +37,50 @@ console.log( localStorage)
   }, [dispatch ]);
 
    
-const IncressHandeller = (e) => {
-  const UserId = typeof window !== 'undefined'&&  window.localStorage.getItem("ib_ID");
-  const data = {
-    UserId,
-    productId: e,
-    count: 1,
-  };
-  dispatch(updateCart(data))
-    .unwrap()
-    .then(() => {
-      dispatch(getUserOrderDetails(UserId));
-    })
-    .catch((rejectedValueOrSerializedError) => {
-      console.log(rejectedValueOrSerializedError);
-    });
-};
+// const IncressHandeller = (e) => {
+//   const UserId = typeof window !== 'undefined'&&  window.localStorage.getItem("ib_ID");
+//   const data = {
+//     UserId,
+//     productId: e,
+//     count: 1,
+//   };
+//   dispatch(updateCart(data))
+//     .unwrap()
+//     .then(() => {
+//       dispatch(getUserOrderDetails(UserId));
+//     })
+//     .catch((rejectedValueOrSerializedError) => {
+//       console.log(rejectedValueOrSerializedError);
+//     });
+// };
 
-const DecressHandeller = (e) => {
-  const UserId = typeof window !== 'undefined'&&  window.localStorage.getItem("ib_ID");
-  const data = {
-    UserId,
-    productId: e,
-    count: -1,
-  };
-  dispatch(updateCart(data))
-    .unwrap()
-    .then(() => {
-      dispatch(getUserOrderDetails(UserId));
-    })
-    .catch((rejectedValueOrSerializedError) => {
-      console.log(rejectedValueOrSerializedError);
-    });
-};
+// const DecressHandeller = (e) => {
+//   const UserId = typeof window !== 'undefined'&&  window.localStorage.getItem("ib_ID");
+//   const data = {
+//     UserId,
+//     productId: e,
+//     count: -1,
+//   };
+//   dispatch(updateCart(data))
+//     .unwrap()
+//     .then(() => {
+//       dispatch(getUserOrderDetails(UserId));
+//     })
+//     .catch((rejectedValueOrSerializedError) => {
+//       console.log(rejectedValueOrSerializedError);
+//     });
+// };
 const FinishCart = () => {
-  const UserId = typeof window !== 'undefined' && window.localStorage.getItem("ib_ID") || 0;
+  const id = typeof window !== 'undefined' && window.localStorage.getItem("ib_ID");
 
-  dispatch(finishCart({ id: UserId }))
+  dispatch(finishCart(id))
     .unwrap()
     .then(() => {
       dispatch(getUserOrderDetails(id));
-      // ShowSuccess();
+      ShowSuccess();
     })
-    .catch((error) => {
-      console.log(error);
+    .catch((rejectedValueOrSerializedError) => {
+      console.log(rejectedValueOrSerializedError);
     });
 };
 
@@ -130,7 +131,7 @@ const TotalPrice = getUserOrderDetails && (
     </div>
     <div>
       <p>الشحن</p>
-      {/* <p>{delivaryPrice} ج</p> */}
+      <p>15 ج</p>
     </div>
     <div>
       <p>السعر الكلي</p>
@@ -159,9 +160,8 @@ const TotalPrice = getUserOrderDetails && (
 <Col md={5} >
 
   {TotalPrice}
-  <button
-  className={styles.contaniue_to_Shop}
-  onClick={() => FinishCart({ id: 2 })}  
+  <button class="btn-save"
+  onClick={() => FinishCart()}  
 >
   حفظ
 </button>

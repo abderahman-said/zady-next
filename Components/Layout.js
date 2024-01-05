@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
-const NavBar = dynamic(() => import("./NavBar"), {
+const NavBar = dynamic(() => import("./NavBar" , { ssr: false }), {
   loading: () => <p>Loading ...</p>,
 });
-const Footer = dynamic(() => import("./Footer"), {
+const Footer = dynamic(() => import("./Footer" , { ssr: false }), {
   loading: () => <p>Loading ...</p>,
 });
-const Header = dynamic(() => import("./Header"), {
+const Header = dynamic(() => import("./Header" , { ssr: false }), {
   loading: () => <p>Loading ...</p>,
 });
-const Meta = dynamic(() => import("./Meta"), {
+const Meta = dynamic(() => import("./Meta" , { ssr: false }), {
   loading: () => <p>Loading ...</p>,
 });
 
@@ -21,17 +21,15 @@ import 'swiper/css';
  
 const Layout = ({ children }) => {
   return (
-    <>
+    <html lang='ar'>
      <NavBar/>
       <Meta />
-      <div >
         <main >
           <Header />
           {children}
           <Footer/>
         </main>
-      </div>
-    </>
+    </html>
   )
 }
 

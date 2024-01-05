@@ -160,7 +160,7 @@ Products
               onMouseEnter={() => handleMouseEnter(e.id)}
           >
             <p>{e.name}</p>
-            <LazyLoadImage loading="lazy" src={`/api/images?id=${e.image}`} alt={e.name} width={150} height={150} />
+            <LazyLoadImage loading="lazy" src={`/api/images?id=${e.image}`} alt={e.name} width={30} height={30} />
           </div>
         </a>
 

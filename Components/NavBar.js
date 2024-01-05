@@ -21,12 +21,25 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import axios from 'axios';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
+import { useRouter } from "next/router";
+import { Logout } from './redux/reducers/AuthSlice';
 
 
 
 function OffCanvasExample({ name, ...props }) {
+  const [show, setShow] = useState(false);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
+  const dispatch = useDispatch();
+  const loremsData = useSelector((state) => state.lorem.loremsData);
+      
+ 
+  const { CartsArr } = useSelector((state) => state.ShopSlice);
+console.log("CartsArr" ,CartsArr)
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -42,20 +55,22 @@ function OffCanvasExample({ name, ...props }) {
   }, []);  
 
   const isFixed = scrollY > 300;
-
-
+  const router = useRouter();
+  const Log =
+  typeof window !== "undefined" &&
+    window.localStorage.getItem("ib_ID") === "0" ? (
+    <Link href={"/Auth/auth"}  className={router.pathname === "/Auth/auth" ? styles.active : styles.link2} >
+        تسجيل الدخول
+    </Link>
+  ) : (
+    <Link href={"/Auth/auth"}  onClick={() => {
+      dispatch(Logout());
+    }}   className={router.pathname === "/Auth/auth" ? styles.active : styles.link2} >
+        تسجيل الخروج
+    </Link>
+  );
 
  
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-
-  const dispatch = useDispatch();
-  const loremsData = useSelector((state) => state.lorem.loremsData);
-      
  
   useEffect(() => {
     const fetchData = async () => {
@@ -112,20 +127,17 @@ function OffCanvasExample({ name, ...props }) {
 
             <div  className={styles.navleft1} >
               <Link href='/sala'>
-              <h6 style={{marginBottom:"0"}}> السله</h6>
+              <h6 > السله</h6>
               </ Link>
               <div className='sala'>
               <i className="fa-solid fa-cart-shopping"></i>
-                 <div className='sala-span' ><span>0</span> </div>  
+                 <div className='sala-span' ><span>{CartsArr ? CartsArr.lines.length : 0}</span> </div>  
               </div>
             </div>
             <div  className={styles.navleft1}> 
-            <Link href='/login_five'>   
-            <h6 style={{marginBottom:"0"}}>تسجيل الدخول</h6>
-            </Link>
+            {Log}
               <div className='sala'>
             <i className="fa-regular fa-user"  ></i>
-              
             </div> 
       </div> 
            

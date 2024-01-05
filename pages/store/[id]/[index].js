@@ -107,17 +107,7 @@ function LeftTabsExample(props) {
     SwiperCore.use([Navigation]);
   }, [productId, dispatch, specs]);
  
-  // const handleAddToCart = async (catId, productId) => {
-  //   const UserId = typeof window !== 'undefined' && window.localStorage.getItem("ib_ID") || 0;
-    
-  //   try {
-  //     await dispatch(getUserOrderDetails({ id:  UserId  }));
-  //     await dispatch(addToCart({ UserId:  UserId  , productId, count: value2 }));
-      
-  //     showSuccess();
-  //   } catch (error) {
-  //     console.error('Error adding to cart:', error);
-  //   }
+ 
   // };
 
 
@@ -132,7 +122,7 @@ function LeftTabsExample(props) {
         await dispatch(addToCart({ UserId: userId, productId, count: value2 }));
         dispatch(AddToCart(data)).then(() => {
           getCart();
-          ShowSuccess();
+          showSuccess();
         });
       }
     } catch (error) {
