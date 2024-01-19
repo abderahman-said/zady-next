@@ -153,7 +153,7 @@ Products
   Lorem2?.cats?.map((e) => { 
     return ( 
       <li key={e.id}>
-        <a  >
+        <div className='a'>
           <div
             className='part'
             data-aos="fade-up"
@@ -162,7 +162,7 @@ Products
             <p>{e.name}</p>
             <LazyLoadImage loading="lazy" src={`/api/images?id=${e.image}`} alt={e.name} width={30} height={30} />
           </div>
-        </a>
+        </div>
 
         <div className="megadrop">
           <div className="col">

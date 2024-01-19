@@ -43,10 +43,10 @@ const names_cat = (props) => {
       {getSubCategoriesData && (
   <div className={styles.head_sub}>
     {getSubCategoriesData.cats
-      ?.filter((cata) => cata.id === props.id)
+      // ?.filter((cata) => cata.id === props.id)
+      ?.slice(0, 3)
       ?.map((cata) => (
         <div className='flex-product header-card' key={cata.id}>
-          <h1> {cata.id} </h1>
           <Link
             href={`/store/id/${cata.id}`}
             as={`/store/${cata.id}/${encodeURIComponent(

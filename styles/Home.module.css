@@ -266,12 +266,12 @@ button.accordion-button.collapsed::after {
   position: fixed !important;
  bottom: 0;
   width: 100%;
-
+  border-top: 1px solid #eeeeee1f;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 99999999999999999999999;
-  background-color: #9a5e9a;
+  z-index: 99999999999;
+  background-color: #0382b1;
   cursor: pointer;
   color: #fff;
   opacity: 0;
@@ -542,13 +542,8 @@ font-size: 18px !important;
 .navbuttom {
   padding: 10px;
 }
-.navbuttom .footerIconButtom {
-font-size: .7rem !important;
-
-}
-.svg-inline--fa {
-font-size: .7rem !important;
-}
+ 
+ 
 .inputfoot {
   min-height: 50px;
   max-width: 150px;
@@ -577,7 +572,9 @@ font-size: .7rem;
 font-size: 15px !important;
 }
 }
-
+.footerIconButtom i {
+  font-size: 18px;
+}
 /* _==========================home============================*/
 .home {
   display: flex;

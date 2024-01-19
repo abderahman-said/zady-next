@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
- // const Url = "https://zayady.deltawy.com";
+//  const Url = "https://zayady.deltawy.com";
  const Url = "http://192.168.0.201:8080/zayady";
 // sign
 export const sign = createAsyncThunk("auth/registre", async (res, thunkAPI) => {
