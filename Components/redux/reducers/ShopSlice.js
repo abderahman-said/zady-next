@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getUserOrderDetails } from "./lorem/loremSlice";
 
-  // const Url = "https://zayady.deltawy.com";
-  const Url = "http://192.168.0.201:8080/zayady"; 
+  const Url = "https://zayady.deltawy.com";
+  // const Url = "http://192.168.0.201:8080/zayady"; 
 
    export const finishCart = createAsyncThunk(
     "finishCart",
