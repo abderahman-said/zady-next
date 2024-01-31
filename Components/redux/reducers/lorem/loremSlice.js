@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const url = "http://192.168.0.201:8080/zayady";
-// const url = "https://zayady.deltawy.com";
+// const url = "http://192.168.0.201:8080/zayady";
+const url = "https://zayady.deltawy.com";
 
 // Async thunk for getLorems
 export const getLorems = createAsyncThunk(
